@@ -1,9 +1,11 @@
 package candlechart;
 
+import lombok.Getter;
 import shared.Price;
 
 import java.util.ArrayList;
 
+@Getter
 public class CandleChart {
 
     public static double MIN_CHART_MARGIN_PIX = 35;
