@@ -86,7 +86,7 @@ public class TestCandlechartDimensions {
 
         for (int i = 0; i < size; i++) {
             double d = Math.random();
-            Price temp = new Price("rand", d, d, d, d);
+            Price temp = new Price("rand", d-0.1, d+0.1, d-0.2, d);
             generatedPrices.add(temp);
         }
         return generatedPrices;
