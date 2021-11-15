@@ -2,6 +2,7 @@ package candlechart;
 
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.StrokeType;
 import lombok.Getter;
 import shared.Candle;
 import shared.Price;
@@ -13,8 +14,8 @@ public class CandleChart {
 
     public static double MIN_CHART_MARGIN_PIX = 35;
     public static double FIXED_CHART_MARGIN_PERCENT = 0.05;
-    public static double MIN_CANDLE_WIDTH_PIX = 3;
-    public static double MIN_CANDLE_GAP_PIX = 3;
+    public static double MIN_CANDLE_WIDTH_PIX = 5;
+    public static double MIN_CANDLE_GAP_PIX = 5;
 
     private ArrayList<Price> prices;
 
@@ -27,6 +28,9 @@ public class CandleChart {
     private double candleGapWidth;
 
     ArrayList<Candle> candles = new ArrayList<>();
+
+    //todo error check
+    //todo error messages - throw exception
 
     public CandleChart(double width, double height, ArrayList<Price> prices) {
         this.prices = prices;
@@ -57,12 +61,14 @@ public class CandleChart {
 
         //create botch
         Line botch = new Line(xMid, yLow, xMid, yHigh);
+        botch.setStrokeType(StrokeType.CENTERED);
+        botch.setStrokeWidth(1d);
 
         //find y-coord open and close
         double yOpen = findCoordinateY(price.getOpen());
         double yClose = findCoordinateY(price.getClose());
         double bodyHeight = Math.abs(yClose - yOpen);
-        double xBodyStart = xMid - 1 - Math.floor(this.candleWidth / 2);
+        double xBodyStart = xMid - Math.floor(this.candleWidth / 2);
         double yBodyStart = yOpen;
         if (yClose < yOpen) yBodyStart = yClose;
 
@@ -89,7 +95,8 @@ public class CandleChart {
 
 
     private double findCoordinateX(int index) {
-        double zeroPoint = this.chartPlotStartingPointX + Math.floor(this.candleWidth / 2) + 1;
+        double zeroPoint = this.chartPlotStartingPointX + Math.floor(this.candleWidth / 2);
+
 
         if (index == 0) {
             return zeroPoint;
