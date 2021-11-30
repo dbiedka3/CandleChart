@@ -42,6 +42,7 @@ public class CandleChart {
     private void balanceChart(double width, double height, int dataSetSize) {
         calculateChartDimensions(width, height);
         calculateCandleWidthAndGap(dataSetSize);
+       balanceCandleGapWithChartWidth();
     }
 
     private void createCandles() {
@@ -102,7 +103,7 @@ public class CandleChart {
             return zeroPoint;
         } else {
 
-            return zeroPoint + 2 * this.candleWidth * index;
+            return zeroPoint +  (this.candleWidth+this.candleGapWidth) * index;
         }
 
     }
@@ -148,7 +149,25 @@ public class CandleChart {
             this.candleGapWidth = caclulatedSize;
 
         }
+
+
+
     }
+
+    private void balanceCandleGapWithChartWidth(){
+        //measure distance vs chart right edge
+        //if distance > noOfGaps candleGapWidth++
+        double pixelSpan = (this.prices.size() ) * (this.candleWidth + this.candleGapWidth)-this.candleGapWidth;
+        double rightCandlesEdge = this.chartPlotStartingPointX + pixelSpan;
+        double plotAreaRightEdge = this.chartPlotStartingPointX + this.chartWidth;
+        double distance = plotAreaRightEdge - rightCandlesEdge;
+        double candleGapAdjustment = Math.floor(distance / this.prices.size());
+        this.candleGapWidth += candleGapAdjustment;
+
+
+
+    }
+
 
     private double findMin() {
         double min = this.prices.get(0).getLow();
