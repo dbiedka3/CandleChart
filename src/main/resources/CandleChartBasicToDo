@@ -1,0 +1,23 @@
+Inspirations: https://www.dukascopy.com/swiss/pl/marketwatch/charts/
+
+Chart basic elements
+1. Add y-axis
+1a. Add y-axis labels
+2. Add x-axis
+3. Add x-axis labels
+
+Chart optional elements
+1. grid lines
+2. Top of a chart  - OHLC prices display - pointer as trigger
+3. sight pointer
+
+Features
+1. active pointer (sight)
+
+Formatting
+1. Candle colours (as set) - css / separte set for lines and fill
+1a. grid lines colours
+2. axes on/off
+3. grid lines on/off
+4
+
