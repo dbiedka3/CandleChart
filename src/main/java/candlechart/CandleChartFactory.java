@@ -4,13 +4,12 @@ import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeType;
 import lombok.Getter;
-import shared.Candle;
 import shared.Price;
 
 import java.util.ArrayList;
 
 @Getter
-public class CandleChart {
+public class CandleChartFactory {
 
     public static double MIN_CHART_MARGIN_PIX = 35;
     public static double FIXED_CHART_MARGIN_PERCENT = 0.05;
@@ -18,6 +17,8 @@ public class CandleChart {
     public static double MIN_CANDLE_GAP_PIX = 5;
 
     private ArrayList<Price> prices;
+
+    private CandleColorSet candleColorSet;
 
     private double chartWidth;
     private double chartHeight;
@@ -32,8 +33,9 @@ public class CandleChart {
     //todo error check
     //todo error messages - throw exception
 
-    public CandleChart(double width, double height, ArrayList<Price> prices) {
+    public CandleChartFactory(double width, double height, ArrayList<Price> prices, CandleColorSet candleColorSet) {
         this.prices = prices;
+        this.candleColorSet = candleColorSet;
         balanceChart(width, height, this.prices.size());
         createCandles();
 
@@ -42,7 +44,7 @@ public class CandleChart {
     private void balanceChart(double width, double height, int dataSetSize) {
         calculateChartDimensions(width, height);
         calculateCandleWidthAndGap(dataSetSize);
-       balanceCandleGapWithChartWidth();
+        balanceCandleGapWithChartWidth();
     }
 
     private void createCandles() {
@@ -77,7 +79,7 @@ public class CandleChart {
         Rectangle body = new Rectangle(xBodyStart, yBodyStart, this.candleWidth, bodyHeight);
 
         //return candle
-        return new Candle(price, body, botch);
+        return new Candle(price, body, botch, this.candleColorSet);
     }
 
     private double findCoordinateY(double value) {
@@ -103,7 +105,7 @@ public class CandleChart {
             return zeroPoint;
         } else {
 
-            return zeroPoint +  (this.candleWidth+this.candleGapWidth) * index;
+            return zeroPoint + (this.candleWidth + this.candleGapWidth) * index;
         }
 
     }
@@ -151,19 +153,17 @@ public class CandleChart {
         }
 
 
-
     }
 
-    private void balanceCandleGapWithChartWidth(){
+    private void balanceCandleGapWithChartWidth() {
         //measure distance vs chart right edge
         //if distance > noOfGaps candleGapWidth++
-        double pixelSpan = (this.prices.size() ) * (this.candleWidth + this.candleGapWidth)-this.candleGapWidth;
+        double pixelSpan = (this.prices.size()) * (this.candleWidth + this.candleGapWidth) - this.candleGapWidth;
         double rightCandlesEdge = this.chartPlotStartingPointX + pixelSpan;
         double plotAreaRightEdge = this.chartPlotStartingPointX + this.chartWidth;
         double distance = plotAreaRightEdge - rightCandlesEdge;
         double candleGapAdjustment = Math.floor(distance / this.prices.size());
         this.candleGapWidth += candleGapAdjustment;
-
 
 
     }
